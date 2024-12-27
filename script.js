@@ -1,4 +1,30 @@
-function knightMoves(start, end) {}
+function knightMoves(start, end) {
+  if (start[0] === end[0] && start[1] === end[1]) {
+    console.log(`You're already at the destination: ${end}`);
+    return [start];
+  }
+
+  const queue = [[start, [start]]];
+  const visited = new Set([start.toString()]);
+
+  while (queue.length > 0) {
+    const [current, path] = queue.shift();
+
+    const moves = get_knight_moves(current);
+
+    for (const move of moves) {
+      if (move[0] === end[0] && move[1] === end[1]) {
+        console.log(`You made it in ${path.length} moves! Here's your path:`);
+        return [...path, move];
+      }
+
+      if (!visited.has(move.toString())) {
+        visited.add(move.toString());
+        queue.push([move, [...path, move]]);
+      }
+    }
+  }
+}
 
 function get_knight_moves(position) {
   const possible_moves = [
